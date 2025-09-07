@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    environment:
+      # - TZ=America/New_York
+      # - TZ=America/Chicago
+      # - TZ=America/Denver
+      # - TZ=America/Los_Angeles
+      # - TZ=America/Phoenix
+      # - TZ=America/Toronto
+      # - TZ=Europe/London
+      # - TZ=Europe/Berlin
+      # - TZ=Asia/Tokyo
+      # - TZ=Australia/Sydney
+    ports:
+      - "8443:8443"                     # Web UI HTTPS
+      - "25500-25600:25500-25600"       # Minecraft server ports (range)
+    volumes:
+      - /volume1/docker/Crafty/backups:/crafty/backups
+      - /volume1/docker/Crafty/logs:/crafty/logs
+      - /volume1/docker/Crafty/servers:/crafty/servers
+      - /volume1/docker/Crafty/config:/crafty/app/config
+      - /volume1/docker/Crafty/import:/crafty/import
+    networks:
+      - crafty-net
+
+networks:
+  crafty-net:
+    driver: bridge
