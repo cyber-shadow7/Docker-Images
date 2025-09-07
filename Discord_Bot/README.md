@@ -11,27 +11,11 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 - Discord statues Channel
 - Granular control of which servers Bot has access to
 
-
 ## Prerequisites
 
 - Docker installation
 - [Discord_Bot ](/Discord_Bot/) Folder pulled from this repo
 - Discord Bot Token 
-
-### - Docker Installation on a Linux system
-
-Make sure system is up to date
-
-```
-apt update
-apt upgrade
-```
-
-Install docker
-```
-apt install docker.io 
-apt install docker-compose
-```
 
 ## Bot Configuration
 
@@ -62,16 +46,25 @@ example: "UUID" #Name of you`re Choice : Crafty Server UUID
 ## Turning it into Docker Container
 
 Once you have this folder/repo
+```
+git clone https://github.com/cyber-shadow7/Docker-Images.git
+```
 
 Prepping to turn into docker image and container
 
 ```
-cd /its/location
+cd Docker-Images/Discord_Bot
 ```
 
 Turns it into Docker image and also into a running container (will need docker to be installed on the system)
 ```
 docker-compose up -d --build
 ```
-
-
+Confirming Container is running
+```
+docker-compose ps
+```
+To check logs (have to be cd into project folder)
+```
+docker-compose logs -f
+```

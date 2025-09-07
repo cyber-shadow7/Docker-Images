@@ -3,3 +3,19 @@
 Docker Images That Ive Compiled, Feel free to use them
 
 Will open disscution section, untill then use the issues section to ask questions or comment ideas
+
+
+### - Docker Installation on a Linux system
+
+Make sure system is up to date
+
+```
+apt update
+apt upgrade
+```
+
+Install docker
+```
+apt install docker.io 
+apt install docker-compose
+```
