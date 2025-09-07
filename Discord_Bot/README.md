@@ -1,6 +1,6 @@
 # Discord Bot
 
-This bot is designed to connect Crafty Server to a discord Bot
+This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a discord Bot
 
 ## Features  
 
@@ -8,9 +8,20 @@ This bot is designed to connect Crafty Server to a discord Bot
 - Stop Crafty Servers on demand
 - Server statues on demand
 - Discord statues Channel
-- granular control of which servers Bot has access to
+- Granular control of which servers Bot has access to
 
-## Installation
+
+
+## Configuration
+
+Inside [docker-compose.yml](docker-compose.yml) 
+
+```yml
+DISCORD_TOKEN: "Token Goes Here"
+```
+
+
+## Turning it into Docker Container
 
 Once you have this folder/repo
 
@@ -25,5 +36,4 @@ Turns it into Docker image and also into a running container (will need docker t
 docker-compose up -d --build
 ```
 
-## configuration
 
