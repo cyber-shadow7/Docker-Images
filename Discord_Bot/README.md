@@ -17,7 +17,8 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 Inside [docker-compose.yml](docker-compose.yml) 
 
 ```yml
-DISCORD_TOKEN: "Token Goes Here"
+    environment:
+      DISCORD_TOKEN: "Token Goes Here"
 ```
 
 
