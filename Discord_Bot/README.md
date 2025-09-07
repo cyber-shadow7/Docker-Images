@@ -12,6 +12,8 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 - Granular control of which servers Bot has access to
 
 
+## Prerequisites
+
 
 ## Configuration
 
