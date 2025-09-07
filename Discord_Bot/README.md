@@ -2,7 +2,7 @@
 
 This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a discord Bot
 
-This bot is designed to connect <a href="[docs/guide.md](https://craftycontrol.com)" target="_blank">Crafty Servers</a> to a discord Bot
+This bot is designed to connect <a href="[https://craftycontrol.com](https://craftycontrol.com)" target="_blank">Crafty Servers</a> to a discord Bot
 
 
 ## Features  
