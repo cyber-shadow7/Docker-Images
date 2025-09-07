@@ -41,7 +41,22 @@ environment:
   DISCORD_TOKEN: "Token Goes Here"
 ```
 
+Inside [config.yaml](/Discord_Bot/config/config.yaml) 
 
+```yml
+base_url: "https://localhost:8443" # Adjust accordingly 
+username: "admin" # Crafty User Name
+password: "password" # Crafty Paasword
+verify_ssl: false # untested...
+update_interval: 300 # can leave as is due to discord 2/10 rule
+category_name: "Crafty Servers" # Discord catagory name of you`re choice
+allowed_user_ids:
+  - 123456789012345678 # edit/add as many as you want
+allowed_role_names:
+  - "CraftyAdmin" # edit/add as many as you want
+servers:  
+example: "UUID" #Name of you`re Choice : Crafty Server UUID
+```
 
 ## Turning it into Docker Container
 
