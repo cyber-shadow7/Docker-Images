@@ -29,7 +29,7 @@ apt upgrade
 
 Install docker
 ```
-apt install docker.io docker-compose-plugin
+apt install docker.io 
 ```
 
 ## Bot Configuration
