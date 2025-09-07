@@ -10,11 +10,11 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 - Server statues on demand
 - Discord statues Channel
 - Granular control of which servers Bot has access to
+- Granular control of which users and roles can use the bot
 
 ## Prerequisites
 
-- [Docker installation](https://github.com/cyber-shadow7/Docker-Images/blob/WIP/README.md#docker-images)
-- [Discord_Bot ](/Discord_Bot/) Folder pulled from this repo
+- Docker & Docker Compose Installed
 - [Discord Bot Token](https://discord.com/developers/applications)
 - A clone of this repository 
 ```
