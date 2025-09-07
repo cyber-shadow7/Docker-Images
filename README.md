@@ -2,8 +2,6 @@
 
 Docker Images That Ive Compiled, Feel free to use them
 
-does this change
-
 ```sh
-docker compose up -d
+gh repo clone cyber-shadow7/Docker-Images
 ```
