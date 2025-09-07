@@ -14,8 +14,25 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 
 ## Prerequisites
 
+- docker installation
+- [Discord_Bot ](/Discord_Bot/) Folder pulled from this repo
+- Discord Bot Token 
 
-## Configuration
+### - Docker Installation on a Linux system
+
+Make sure system is up to date
+
+```
+apt update
+apt upgrade
+```
+
+Install docker
+```
+apt install docker.io docker-compose-plugin
+```
+
+## Bot Configuration
 
 Inside [docker-compose.yml](docker-compose.yml) 
 
