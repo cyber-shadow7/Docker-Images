@@ -15,7 +15,11 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 
 - [Docker installation](https://github.com/cyber-shadow7/Docker-Images/blob/WIP/README.md#docker-images)
 - [Discord_Bot ](/Discord_Bot/) Folder pulled from this repo
-- Discord Bot Token 
+- [Discord Bot Token](https://discord.com/developers/applications)
+- A clone of this repository 
+```
+git clone https://github.com/cyber-shadow7/Docker-Images.git
+```
 
 ## Bot Configuration
 
@@ -46,9 +50,7 @@ example: "UUID" #Name of you`re Choice : Crafty Server UUID
 ## Turning it into Docker Container
 
 Once you have this folder/repo
-```
-git clone https://github.com/cyber-shadow7/Docker-Images.git
-```
+
 
 Prepping to turn into docker image and container
 
