@@ -300,12 +300,14 @@ async def reload_config(interaction: discord.Interaction):
     await interaction.response.send_message("✅ Config reloaded.", ephemeral=True)
 
 # ---------- Background Task ----------
+# ---------- Background Task ----------
 @tasks.loop(seconds=update_interval)
 async def update_task():
     try:
         await refresh_server_map()
     except Exception as e:
         log.warning(f"Could not refresh server map: {e}")
+        return  # skip this iteration but keep loop running
 
     for guild_id, per_guild_map in channel_map.items():
         guild = bot.get_guild(guild_id)
@@ -322,6 +324,7 @@ async def update_task():
                 data = await crafty_client.get_stats(sid)
                 running = bool(data.get("running"))
 
+                # Only show Online/Offline now
                 new_name = (
                     f"🟢 {friendly.capitalize()}: Online"
                     if running else f"🔴 {friendly.capitalize()}: Offline"
@@ -337,8 +340,14 @@ async def update_task():
                     await ch.edit(name=new_name)
                     channel_last_update[ch.id] = now
 
+            except aiohttp.ClientConnectionError as e:
+                log.warning(f"Could not connect to Crafty for server {friendly}: {e}")
+            except asyncio.TimeoutError:
+                log.warning(f"Request timed out for server {friendly}")
+            except RuntimeError as e:
+                log.warning(f"HTTP error for server {friendly}: {e}")
             except Exception as e:
-                log.warning(f"Failed to update server {friendly}: {e}")
+                log.warning(f"Unexpected error updating server {friendly}: {e}")
 
 # ---------- Main ----------
 if __name__ == "__main__":
