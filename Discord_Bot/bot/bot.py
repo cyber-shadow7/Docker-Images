@@ -183,39 +183,34 @@ async def ensure_channels_for_guild(guild: discord.Guild):
 # ---------- Events ----------
 @bot.event
 async def on_ready():
-    # Try logging into Crafty safely
-    try:
-        await crafty_client.login()
-    except Exception as e:
-        log.warning(f"Crafty not available yet: {e}")
-
-    # Try refreshing the server map safely
-    try:
-        await refresh_server_map()
-    except Exception as e:
-        log.warning(f"Could not refresh server map yet: {e}")
-
-    # Ensure channels exist for each guild, safely
-    for g in bot.guilds:
+    # Retry loop for Crafty login
+    max_retries = 10
+    delay = 5  # start with 5 seconds
+    for attempt in range(1, max_retries + 1):
         try:
-            await ensure_channels_for_guild(g)
+            await crafty_client.login()
+            log.info("Successfully logged in to Crafty API")
+            break
         except Exception as e:
-            log.warning(f"Could not ensure channels for guild {g.name}: {e}")
+            log.warning(f"Crafty login failed (attempt {attempt}/{max_retries}): {e}")
+            if attempt == max_retries:
+                log.error("Max retries reached, exiting...")
+                raise SystemExit(1)
+            await asyncio.sleep(delay)
+            delay = min(delay * 2, 60)  # exponential backoff, max 60s
+
+    # Refresh server map and ensure channels
+    await refresh_server_map()
+    for g in bot.guilds:
+        await ensure_channels_for_guild(g)
 
     # 🔑 Sync slash commands
     try:
-        # Option A: Global sync (commands everywhere, may take up to 1h)
         synced = await bot.tree.sync()
         log.info(f"Globally synced {len(synced)} slash commands.")
-
-        # Option B: Per-guild sync (instant, for testing)
-        # test_guild_id = 123456789012345678  # replace with your test server ID
-        # synced = await bot.tree.sync(guild=discord.Object(id=test_guild_id))
-        # log.info(f"Synced {len(synced)} commands to guild {test_guild_id}.")
     except Exception as e:
         log.error(f"Failed to sync commands: {e}")
 
-    # Start the background update loop
     update_task.start()
     log.info("Bot ready as %s", bot.user)
 
