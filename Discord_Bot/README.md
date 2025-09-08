@@ -8,7 +8,7 @@ This bot is designed to connect [Crafty Servers](https://craftycontrol.com) to a
 - Start Crafty Serves on demand
 - Stop Crafty Servers on demand
 - Server statues on demand
-- Discord statues Channel
+- Discord status Channel
 - Granular control of which servers Bot has access to
 - Granular control of which users and roles can use the bot
 
