@@ -307,7 +307,11 @@ async def reload_config(interaction: discord.Interaction):
 # ---------- Background Task ----------
 @tasks.loop(seconds=update_interval)
 async def update_task():
-    await refresh_server_map()
+    try:
+        await refresh_server_map()
+    except Exception as e:
+        log.warning(f"Could not refresh server map: {e}")
+
     for guild_id, per_guild_map in channel_map.items():
         guild = bot.get_guild(guild_id)
         if not guild:
@@ -323,7 +327,6 @@ async def update_task():
                 data = await crafty_client.get_stats(sid)
                 running = bool(data.get("running"))
 
-                # Only show Online/Offline now
                 new_name = (
                     f"🟢 {friendly.capitalize()}: Online"
                     if running else f"🔴 {friendly.capitalize()}: Offline"
@@ -341,7 +344,7 @@ async def update_task():
 
             except Exception as e:
                 log.warning(f"Failed to update server {friendly}: {e}")
-                
+
 # ---------- Main ----------
 if __name__ == "__main__":
     token = os.environ.get("DISCORD_TOKEN") or _cfg.get("discord_token")
