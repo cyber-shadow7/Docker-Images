@@ -170,12 +170,29 @@ async def on_ready():
     await refresh_server_map()
     for g in bot.guilds:
         await ensure_channels_for_guild(g)
+
+    # 🔑 Sync slash commands
+    try:
+        # Option A: Global sync (commands everywhere, may take up to 1h)
+        synced = await bot.tree.sync()
+        log.info(f"Globally synced {len(synced)} slash commands.")
+
+        # Option B: Per-guild sync (instant, for testing)
+        # test_guild_id = 123456789012345678  # replace with your test server ID
+        # synced = await bot.tree.sync(guild=discord.Object(id=test_guild_id))
+        # log.info(f"Synced {len(synced)} commands to guild {test_guild_id}.")
+
+    except Exception as e:
+        log.error(f"Failed to sync commands: {e}")
+
     update_task.start()
     log.info("Bot ready as %s", bot.user)
+
 
 @bot.event
 async def on_guild_join(guild: discord.Guild):
     await ensure_channels_for_guild(guild)
+
 
 # ---------- Autocomplete ----------
 # Not working yet
