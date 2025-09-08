@@ -32,6 +32,7 @@ def load_config(path: str = CONFIG_PATH) -> Dict[str, Any]:
     return cfg
 
 # ---------- Crafty API Client ----------
+# ---------- Crafty API Client ----------
 class CraftyClient:
     def __init__(self, cfg: Dict[str, Any]):
         self.base = cfg["crafty"]["base_url"].rstrip("/")
@@ -80,16 +81,33 @@ class CraftyClient:
         headers = kwargs.pop("headers", {})
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
-        async with sess.request(method, url, headers=headers,
-                                ssl=(None if self.verify_ssl else False),
-                                timeout=self.timeout, **kwargs) as r:
-            if r.status == 401 and retry and not self.bearer_token:
-                await self.login()
-                return await self._request(method, path, retry=False, **kwargs)
-            if r.status >= 400:
-                text = await r.text()
-                raise RuntimeError(f"HTTP {r.status}: {text}")
-            return await r.json()
+
+        try:
+            async with sess.request(
+                method, url,
+                headers=headers,
+                ssl=(None if self.verify_ssl else False),
+                timeout=self.timeout,
+                **kwargs
+            ) as r:
+                if r.status == 401 and retry and not self.bearer_token:
+                    # token expired → re-login once
+                    await self.login()
+                    return await self._request(method, path, retry=False, **kwargs)
+
+                if r.status >= 400:
+                    text = await r.text()
+                    raise RuntimeError(f"HTTP {r.status}: {text}")
+
+                return await r.json()
+
+        except aiohttp.ClientConnectionError as e:
+            log.warning(f"Crafty not reachable ({e}), will retry later")
+            raise
+
+        except asyncio.TimeoutError:
+            log.warning("Crafty request timed out, will retry later")
+            raise
 
     async def get_servers(self):
         data = await self._request("GET", "/api/v2/servers")
