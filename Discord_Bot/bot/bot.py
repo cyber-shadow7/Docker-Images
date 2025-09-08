@@ -32,7 +32,6 @@ def load_config(path: str = CONFIG_PATH) -> Dict[str, Any]:
     return cfg
 
 # ---------- Crafty API Client ----------
-# ---------- Crafty API Client ----------
 class CraftyClient:
     def __init__(self, cfg: Dict[str, Any]):
         self.base = cfg["crafty"]["base_url"].rstrip("/")
@@ -184,10 +183,24 @@ async def ensure_channels_for_guild(guild: discord.Guild):
 # ---------- Events ----------
 @bot.event
 async def on_ready():
-    await crafty_client.login()
-    await refresh_server_map()
+    # Try logging into Crafty safely
+    try:
+        await crafty_client.login()
+    except Exception as e:
+        log.warning(f"Crafty not available yet: {e}")
+
+    # Try refreshing the server map safely
+    try:
+        await refresh_server_map()
+    except Exception as e:
+        log.warning(f"Could not refresh server map yet: {e}")
+
+    # Ensure channels exist for each guild, safely
     for g in bot.guilds:
-        await ensure_channels_for_guild(g)
+        try:
+            await ensure_channels_for_guild(g)
+        except Exception as e:
+            log.warning(f"Could not ensure channels for guild {g.name}: {e}")
 
     # 🔑 Sync slash commands
     try:
@@ -199,17 +212,20 @@ async def on_ready():
         # test_guild_id = 123456789012345678  # replace with your test server ID
         # synced = await bot.tree.sync(guild=discord.Object(id=test_guild_id))
         # log.info(f"Synced {len(synced)} commands to guild {test_guild_id}.")
-
     except Exception as e:
         log.error(f"Failed to sync commands: {e}")
 
+    # Start the background update loop
     update_task.start()
     log.info("Bot ready as %s", bot.user)
 
 
 @bot.event
 async def on_guild_join(guild: discord.Guild):
-    await ensure_channels_for_guild(guild)
+    try:
+        await ensure_channels_for_guild(guild)
+    except Exception as e:
+        log.warning(f"Could not ensure channels for new guild {guild.name}: {e}")
 
 
 # ---------- Autocomplete ----------
